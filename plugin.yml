@@ -1,0 +1,50 @@
+# PluginVersions
+#
+# See http://wiki.bukkit.org/Plugin_YAML for a complete list of requirements and options.
+
+name: PluginVersions
+version: 1.0.0
+author: rambeau
+description: List loaded plugins and versions
+main: com.straight8.rambeau.PluginVersions.PluginVersions
+
+commands:
+  pv:
+    description: Commands for PluginVersions
+    usage: <command> list | <command> reload
+  pv list:
+    description: List loaded plugins and versions
+    usage: <command> [page]
+  pv reload:
+    description: Reload configuration file
+    usage: <command>
+
+# Futures:
+# pv check-update:
+#   description: Check for updates for a specific plugin or all loaded plugins
+#   usage: <command> pluginName | all 
+# pv update:
+#   description: Update a specific plugin or all loaded plugins
+#   usage: <command> pluginName | all
+ 
+permissions:
+  pluginversions.*:
+    description: Allows access to all PluginVersions commands
+    children:
+      pluginversions.list: true
+      pluginversions.reload: true
+#     pluginversions.check-update: true
+#     pluginversions.update: true
+  pluginversions.list:
+    description: Allows you to retrieve PluginVersions listing
+    default: op
+  pluginversions.reload:
+    description: Allows you to reload PluginVersions configuration
+    default: op
+# pluginversions.check-update:
+#   description: Allows you to check for plugin updates
+#   default: op
+# pluginversions.update:
+#   description: Allows you to update plugins
+#   default: op
+    
