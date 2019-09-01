@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.straight8.rambeau</groupId>
   <artifactId>PluginVersions</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <name>PluginVersions</name>
   <description>Remap biomes to create strange new worlds.</description>
   <properties>
