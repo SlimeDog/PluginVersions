@@ -4,9 +4,10 @@
 
 name: ${project.name}
 version: ${project.version}
+api-version: 1.14
 main: ${project.groupId}.${project.artifactId}.${project.name}
 description: ${project.description}
-authors: [rambeau, drives_a_ford]
+authors: [SlimeDog, drives_a_ford]
 
 commands:
   pv:
