@@ -21,7 +21,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 // Imports for Metrics
-import org.mcstats.MetricsLite;
+import org.bstats.bukkit.Metrics;
+
 
 // FOR TESTING, BUT DELETE UNUSED CODE: @SuppressWarnings("unused")
 
@@ -44,12 +45,7 @@ public class PluginVersions extends JavaPlugin {
 		
 		// Submit plugin usage data to MCStats.org.
     	if (configurationSendMetrics == true) {
-			try {
-				MetricsLite metrics = new MetricsLite(this);
-				metrics.start();
-			} catch (Exception e) {
-				// TODO: Failed to submit data				
-			}
+			new Metrics(this);
 		}
     }
     
