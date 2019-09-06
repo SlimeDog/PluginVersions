@@ -4,48 +4,33 @@
 
 name: ${project.name}
 version: ${project.version}
-api-version: 1.14
+api-version: 1.13
 main: ${project.groupId}.${project.artifactId}.${project.name}
 description: ${project.description}
 authors: [SlimeDog, drives_a_ford]
 
 commands:
-  pv:
+  pluginversions:
     description: Commands for PluginVersions
     usage: <command> list | <command> reload
-  pv list:
+    aliases: [pv]
+  pluginversions list:
     description: List loaded plugins and versions
     usage: <command> [page]
-  pv reload:
+  pluginversions reload:
     description: Reload configuration file
     usage: <command>
 
-# Futures:
-# pv check-update:
-#   description: Check for updates for a specific plugin or all loaded plugins
-#   usage: <command> pluginName | all 
-# pv update:
-#   description: Update a specific plugin or all loaded plugins
-#   usage: <command> pluginName | all
- 
 permissions:
   pluginversions.*:
     description: Allows access to all PluginVersions commands
     children:
       pluginversions.list: true
       pluginversions.reload: true
-#     pluginversions.check-update: true
-#     pluginversions.update: true
   pluginversions.list:
     description: Allows you to retrieve PluginVersions listing
     default: op
   pluginversions.reload:
     description: Allows you to reload PluginVersions configuration
     default: op
-# pluginversions.check-update:
-#   description: Allows you to check for plugin updates
-#   default: op
-# pluginversions.update:
-#   description: Allows you to update plugins
-#   default: op
     
