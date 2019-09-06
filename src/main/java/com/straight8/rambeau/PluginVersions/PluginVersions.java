@@ -48,19 +48,21 @@ public class PluginVersions extends JavaPlugin {
 			new Metrics(this);
 		}
 
-		new UpdateChecker(this, (response,version)-> {
-			switch(response){
-			case LATEST:
-				getLogger().info("Running latest version!");
-				break;
-			case UNAVAILABLE:
-				getLogger().info("Unable to check for new version");
-				break;
-			case FOUND_NEW:
-				getLogger().warning("Running outdated version! New version available:" + version);
-				break;
-			}
-		}).check();
+		if (getConfig().getBoolean("check-for-updates")) {
+			new UpdateChecker(this, (response,version)-> {
+				switch(response){
+				case LATEST:
+					getLogger().info("Running latest version!");
+					break;
+				case UNAVAILABLE:
+					getLogger().info("Unable to check for new version");
+					break;
+				case FOUND_NEW:
+					getLogger().warning("Running outdated version! New version available:" + version);
+					break;
+				}
+			}).check();
+		}
     }
     
     // Fired when plugin is disabled

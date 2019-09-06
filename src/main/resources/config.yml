@@ -16,3 +16,7 @@
 # which supercedes the settings for individual plugins.
 
 metrics: true
+
+# Check for updates.
+
+check-for-updates: true
