@@ -5,10 +5,7 @@ Like most server operators, we use a large number of Spigot/Bukkit plugins. Keep
 Create an alphabetically-sorted list of loaded plugins and versions.
 
 **Tested Environments**  
-The plugin has been tested on the following Spigot versions. It should work on other Minecraft modifications and versions, but we have not tested them and do not intend to do so. We will  address promptly any issues reported.
-
-> Spigot 1.9  
-> Spigot 1.8.8  
+**PluginVersions** was originally written for Spigot 1.8.8, and has worked for every Spigot version since then.  
 
 **Commands 1.0**  
 All commands may be executed in-game or at the console.  
