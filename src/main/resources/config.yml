@@ -3,11 +3,10 @@
 # To regenerate the default file content, delete the file and run:
 #		/pv reload
 #
-# By default, we send anonymous plugin usage data to bstats.org.
-# If you do not want to allow us to collect and send these data, change the value below to
-#		metrics: false
-
-metrics: true
+# By default, the plugin collects and transmits anonymous statistics to bstats.org.
+# Data collection may be disabled here, or generally in the bStats/config.yml.
+#
+enable-metrics: true
 
 # Check for updates.
 
