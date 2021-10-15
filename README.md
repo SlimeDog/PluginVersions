@@ -1,6 +1,3 @@
-**Introduction**  
-Like most server operators, we use a large number of Spigot/Bukkit plugins. Keeping track of available upgrades can be frustrating. We rename jars to indicate versions (which requires that we type accurately). We watch Spigot resource forums to get notification of updates (but not useful for Bukkit-listed plugins). We wrote bash/screen scripts to supplement _/version_ (once for each plugin returned by _/plugins_) which were broken by the spigot.org CloudFlare D-DOS protection. We decided to write a plugin to address our needs. Perhaps others will find it useful.
-
 **Product Description**  
 Create an alphabetically-sorted list of loaded plugins and versions.
 
