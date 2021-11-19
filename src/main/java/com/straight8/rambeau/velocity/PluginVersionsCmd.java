@@ -1,11 +1,13 @@
 package com.straight8.rambeau.velocity;
 
+import com.straight8.rambeau.bungee.PluginVersionsBungee;
+import com.straight8.rambeau.bungee.YamlConfig;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.SimpleCommand;
-import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.PluginContainer;
 import com.velocitypowered.api.proxy.Player;
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,8 @@ public class PluginVersionsCmd implements SimpleCommand {
         CommandSource sender = invocation.source();
         // Get the arguments after the command alias
         String[] args = invocation.arguments();
+
+
 
         if (args.length == 0) {
             return;
@@ -93,6 +97,11 @@ public class PluginVersionsCmd implements SimpleCommand {
                 }
             }
             // break;
+        } else if(cmdLowercase.equals("reload")) {
+            YamlConfig.createFiles("config");
+            PluginVersionsBungee.getInstance().ReadConfigValuesFromFile();
+
+            sender.sendMessage(Component.text("Reloaded " + ChatColor.AQUA +"PluginVersions/config.yml"));
         } else {
             sender.sendMessage(Component.text("Unrecognized command option " + cmdLowercase));
         }

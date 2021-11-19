@@ -11,6 +11,14 @@ public class PluginComparator implements Comparator<PluginContainer> {
 		if (!(p1 instanceof PluginContainer) || !(p2 instanceof PluginContainer)) {
 			throw new ClassCastException();
 		}
-		return p1.getDescription().getName().get().compareToIgnoreCase(p2.getDescription().getName().get());
+
+		if(p1 != null && p2 != null) {
+			String name1 = p1.getDescription().getName().get();
+			String name2 = p2.getDescription().getName().get();
+			if(name1 != null && name2 != null) {
+				return name1.compareToIgnoreCase(name2);
+			}
+		}
+		throw new ClassCastException();
 	}
 }

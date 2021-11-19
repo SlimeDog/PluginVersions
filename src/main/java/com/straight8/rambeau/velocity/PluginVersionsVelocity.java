@@ -10,11 +10,13 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
-import org.spongepowered.configurate.CommentedConfigurationNode;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.nio.file.Path;
 
-@Plugin(id = "pluginversions", name = "PluginVersions", version = "1.0.6", description = "List installed plugins and versions alphabetically", authors = {"SlimeDog", "drives_a_ford"})
+@Plugin(id = "pluginversions", name = "PluginVersions", version = "1.0.6", description = "List installed plugins and versions alphabetically", authors = {"SlimeDog", "drives_a_ford", "GabrielHD150"})
 public class PluginVersionsVelocity {
 
     private static PluginVersionsVelocity instance;
@@ -34,13 +36,20 @@ public class PluginVersionsVelocity {
 
         this.server = server;
         this.logger = logger;
+
         this.dataDirectory = dataDirectory;
         this.metricsFactory = metricsFactory;
     }
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        this.yamlConfig = new YamlConfig(this.dataDirectory, "config.yml", logger, server);
+        YamlConfig.createFiles("config");
+
+        try {
+            this.yamlConfig = new YamlConfig(new File(this.dataDirectory.toFile(), "config.yml"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         this.ReadConfigValuesFromFile();
 
@@ -54,10 +63,21 @@ public class PluginVersionsVelocity {
         CommandManager commandManager = server.getCommandManager();
         CommandMeta meta = commandManager.metaBuilder("pluginversions")
                 // Specify other aliases (optional)
-                .aliases("pv")
+                .aliases("pluginversionsvelocity")
+                .aliases("pvv")
                 .build();
 
         commandManager.register(meta, new PluginVersionsCmd(this));
+
+        if (checkUpdates) {
+            new UpdateChecker(this, (response, version)-> {
+                switch (response) {
+                    case LATEST -> this.logger.info("Running latest version!");
+                    case UNAVAILABLE -> this.logger.info("Unable to check for new version");
+                    case FOUND_NEW -> this.logger.warn("Running outdated version! New version available:" + version);
+                }
+            }).check();
+        }
     }
 
     public static PluginVersionsVelocity getInstance() {
@@ -65,11 +85,11 @@ public class PluginVersionsVelocity {
     }
 
     public void ReadConfigValuesFromFile() {
-        CommentedConfigurationNode configNode = this.yamlConfig.getConfigNode();
+        YamlConfig configNode = this.yamlConfig;
 
         // Optimized the code to read the configuration options
-        configurationSendMetrics = configNode.node("enable-metrics").getBoolean(true);
-        checkUpdates = configNode.node("check-for-updates").getBoolean(true);
+        configurationSendMetrics = configNode.getBoolean("enable-metrics", true);
+        checkUpdates = configNode.getBoolean("check-for-updates", true);
     }
 
     public void log(String logString) {
@@ -78,5 +98,13 @@ public class PluginVersionsVelocity {
 
     public ProxyServer getServer() {
         return server;
+    }
+
+    public File getDataFolder() {
+        return this.dataDirectory.toFile();
+    }
+
+    public InputStream getResourceAsStream(String name) {
+        return this.getClass().getClassLoader().getResourceAsStream(name);
     }
 }

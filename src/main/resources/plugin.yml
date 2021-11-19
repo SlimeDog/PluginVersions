@@ -3,11 +3,11 @@
 # See http://wiki.bukkit.org/Plugin_YAML for a complete list of requirements and options.
 
 name: PluginVersions
-version: 1.0.6
+version: ${project.version}
 api-version: 1.13
 main: com.straight8.rambeau.bukkit.PluginVersionsBukkit
 description: List installed plugins and versions alphabetically
-authors: [SlimeDog, drives_a_ford]
+authors: [SlimeDog, drives_a_ford, GabrielHD150]
 
 commands:
   pluginversions:
