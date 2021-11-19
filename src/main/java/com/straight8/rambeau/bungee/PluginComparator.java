@@ -1,8 +1,8 @@
-package com.straight8.rambeau.PluginVersions;
+package com.straight8.rambeau.bungee;
+
+import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.Comparator;
-
-import org.bukkit.plugin.Plugin;
 
 public class PluginComparator implements Comparator<Plugin> {
 
@@ -11,6 +11,6 @@ public class PluginComparator implements Comparator<Plugin> {
 		if (!(p1 instanceof Plugin) || !(p2 instanceof Plugin)) {
 			throw new ClassCastException();
 		}
-		return p1.getName().compareToIgnoreCase(p2.getName());
+		return p1.getDescription().getName().compareToIgnoreCase(p2.getDescription().getName());
 	}
 }

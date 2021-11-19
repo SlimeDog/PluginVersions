@@ -5,32 +5,31 @@
 // FUTURE? Report available updates for loaded plugins.
 // FUTURE? Update specific plugins or all loaded plugins.
 
-package com.straight8.rambeau.PluginVersions;
+package com.straight8.rambeau.bukkit;
+
+import com.straight8.rambeau.metrics.SpigotMetrics;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
 // import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
 // Imports for Metrics
-import org.bstats.bukkit.Metrics;
 
-
-// FOR TESTING, BUT DELETE UNUSED CODE: @SuppressWarnings("unused")
-
-public class PluginVersions extends JavaPlugin {
+public class PluginVersionsBukkit extends JavaPlugin {
 	public final Logger logger = Logger.getLogger("Minecraft");
 	
     // Configuration values:
-	private Boolean configurationSendMetrics = true;
+	private boolean configurationSendMetrics = true;
+	private boolean checkUpdates = true;
 
 	// Fired when plugin is first enabled
     @Override
@@ -41,15 +40,15 @@ public class PluginVersions extends JavaPlugin {
     	CreateConfigFileIfMissing();
     	
     	// Read the configuration values from config.yml.
-    	ReadConfigValuesFromFile(false);
+    	ReadConfigValuesFromFile();
 		
 		// Submit plugin usage data to MCStats.org.
-    	if (configurationSendMetrics == true) {
-			new Metrics(this);
+    	if (configurationSendMetrics) {
+			new SpigotMetrics(this, 5509);
 		}
 
-		if (getConfig().getBoolean("check-for-updates")) {
-			new UpdateChecker(this, (response,version)-> {
+		if (checkUpdates) {
+			new UpdateChecker(this, (response, version)-> {
 				switch(response){
 				case LATEST:
 					getLogger().info("Running latest version!");
@@ -77,7 +76,7 @@ public class PluginVersions extends JavaPlugin {
 			return true;
 		}
 		String cmdLowercase = args[0].toLowerCase();
-		
+
 		if (sender instanceof Player) {
 			if (!sender.hasPermission("pluginversions." + cmdLowercase)) {
 				String senderName = getName();
@@ -101,9 +100,7 @@ public class PluginVersions extends JavaPlugin {
 			if (args.length > 1) {
 				try {
 					page = Integer.parseInt(args[1]);
-				} catch (Exception e) {
-					page = 0;				
-				}
+				} catch (Exception ignored) {}
 			}
 			// Set page to 0 if illegal page was requested
 			page = Math.max(page, 0);
@@ -147,22 +144,9 @@ public class PluginVersions extends JavaPlugin {
 			
 		case "reload":
 			CreateConfigFileIfMissing();
-			ReadConfigValuesFromFile(true);
+			ReadConfigValuesFromFile();
 			sender.sendMessage("Reloaded " + ChatColor.AQUA + this.getName() + "/config.yml" );
 			return true;
-			// break;
-
-// TODO: FUTURES? IF POSSIBLE...
-//			case "check-update":
-//			private Boolean updateAvailable = false;
-//			sender.sendMessage("Run " + cmd + " " + commandLowerCase);
-//			return true;
-//			// break;
-			
-//		case "update":
-//			sender.sendMessage("Run " + cmd + " " + commandLowerCase);
-//			return true;
-//			// break;
 			
 		default:
 			sender.sendMessage("Unrecognized command option " + cmdLowercase);
@@ -195,8 +179,7 @@ public class PluginVersions extends JavaPlugin {
     				saveDefaultConfig();
     			} catch(Exception e) {
         			this.log(pdfFile.getName() + ": could not save config.yml");
-    				return;
-    			}
+				}
     			// Do not saveConfig() or comments below the header will be deleted.
     			// There are  code samples on the internet that resolve the issue,
     			// but not needed, since we don't want to change values on the fly.
@@ -209,52 +192,16 @@ public class PluginVersions extends JavaPlugin {
     	}
     }
 
-    public void ReadConfigValuesFromFile(Boolean reportChanges) {
-    	int countChangesOnReload = 0;
-    	// Get inMemory value.
-    	FileConfiguration inMemoryConfig = getConfig();
-       	String inMemoryConfigString = inMemoryConfig.getString("metrics");
-       	// TESTING: this.log("inMemoryConfigString=[" + inMemoryConfigString + "]");
-       	
-       	// Get (possibly) new value from file.
-       	this.reloadConfig();
-       	FileConfiguration reloadedConfig = getConfig();
+    public void ReadConfigValuesFromFile() {
+		this.reloadConfig();
 
-       	// Evaluate metrics: true | false
-       	String reloadedConfigString = reloadedConfig.getString("metrics");
-		if (reloadedConfigString == null) {
-    		if (inMemoryConfigString.contains("true")) {
-        		configurationSendMetrics = true;
-     		}
-    		else {
-        		configurationSendMetrics = false;
-    		}
-    		return;
-    	}		
-   		reloadedConfigString = reloadedConfigString.replace("'", "") + ",";
-    	if (reloadedConfigString.contains("true")) {
-    		configurationSendMetrics = true;
-    		if (inMemoryConfigString.contains("false")) {
-	   			++countChangesOnReload;
-	   			this.log("config value changed: metrics=true; metrics will be sent");
-    		}
-    	} else {
-       		if (reloadedConfigString.contains("false")) {
-        		configurationSendMetrics = false;
-       			if (inMemoryConfigString.contains("true")) {
-    	   			++countChangesOnReload;
-    	   			this.log("config value changed: metrics=false; metrics will not be sent");
-       			}
-       		}
-    	}
-		if (countChangesOnReload == 0) {
-			this.log("no config values were changed on reload");
-		}
-    	return;
-    }
+		FileConfiguration reloadedConfig = getConfig();
+		// Optimized the code to read the configuration options
+		configurationSendMetrics = reloadedConfig.getBoolean("enable-metrics", true);
+		checkUpdates = reloadedConfig.getBoolean("check-for-updates", true);
+	}
 
     public void log(String logString) {
     	this.logger.info("[" + this.getName() + "] " + logString);
     }
-    
 }

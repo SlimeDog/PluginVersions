@@ -1,0 +1,5 @@
+name: PluginVersions
+version: 1.0.6
+main: com.straight8.rambeau.bungee.PluginVersionsBungee
+description: List installed plugins and versions alphabetically
+authors: [SlimeDog, drives_a_ford]
