@@ -7,7 +7,7 @@ version: ${project.version}
 api-version: 1.13
 main: com.straight8.rambeau.bukkit.PluginVersionsBukkit
 description: List installed plugins and versions alphabetically
-authors: [SlimeDog, drives_a_ford, GabrielHD150]
+authors: [drives_a_ford, GabrielHD150, SlimeDog]
 
 commands:
   pluginversions:
