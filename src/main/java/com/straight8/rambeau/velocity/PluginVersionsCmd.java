@@ -70,7 +70,9 @@ public class PluginVersionsCmd implements SimpleCommand {
                 // Construct a tablular format for fixed-pitch fonts, like log and console.
                 int n = 1;
                 for (PluginContainer p : pluginList) {
-                    n = Math.max(n, p.getDescription().getName().get().length());
+                    if(p.getDescription().getName().isPresent()) {
+                        n = Math.max(n, p.getDescription().getName().get().length());
+                    }
                 }
                 formatString = String.format("%%-%ds %%s", n);
             }
@@ -82,13 +84,17 @@ public class PluginVersionsCmd implements SimpleCommand {
                 }
                 for (int i = ((page - 1) * linesPerPage); i < pluginList.size() && i < (page * linesPerPage); i++) {
                     PluginContainer p = pluginList.get(i);
-                    sender.sendMessage(Component.text(String.format(formatString,
-                            p.getDescription().getName().get(), p.getDescription().getVersion().get())));
+
+                    if(p.getDescription().getName().isPresent() && p.getDescription().getVersion().isPresent()) {
+                        sender.sendMessage(Component.text(String.format(formatString, p.getDescription().getName().get(), p.getDescription().getVersion().get())));
+                    }
                 }
             } else {
                 for (PluginContainer p : pluginList) {
-                    sender.sendMessage(Component.text(String.format(formatString,
-                            p.getDescription().getName().get(), p.getDescription().getVersion().get())));
+                    if(p.getDescription().getName().isPresent() && p.getDescription().getVersion().isPresent()) {
+                        sender.sendMessage(Component.text(String.format(formatString,
+                                p.getDescription().getName().get(), p.getDescription().getVersion().get())));
+                    }
                 }
             }
             // break;
