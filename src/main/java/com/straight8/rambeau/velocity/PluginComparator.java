@@ -19,6 +19,6 @@ public class PluginComparator implements Comparator<PluginContainer> {
 				return name1.compareToIgnoreCase(name2);
 			}
 		}
-		throw new ClassCastException();
+		return -1;
 	}
 }
