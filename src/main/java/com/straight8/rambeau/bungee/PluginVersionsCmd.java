@@ -4,7 +4,6 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Plugin;
-import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,7 @@ public class PluginVersionsCmd extends Command {
     private final PluginVersionsBungee plugin;
 
     public PluginVersionsCmd(PluginVersionsBungee plugin) {
-        super("pluginversions", "pluginversions.list", "pvb", "pluginversionsbungee");
+        super("pluginversions", "pluginversions.list", "pvb");
 
         this.plugin = plugin;
     }
@@ -94,7 +93,7 @@ public class PluginVersionsCmd extends Command {
             YamlConfig.createFiles("config");
             PluginVersionsBungee.getInstance().ReadConfigValuesFromFile();
 
-            sender.sendMessage("Reloaded " + ChatColor.AQUA + this.getName() + "/config.yml" );
+            sender.sendMessage("Reloaded §bPluginVersions/config.yml" );
         } else {
             sender.sendMessage("Unrecognized command option " + cmdLowercase);
         }

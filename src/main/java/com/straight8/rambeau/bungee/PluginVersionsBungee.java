@@ -29,9 +29,18 @@ public class PluginVersionsBungee extends Plugin {
         if (checkUpdates) {
             new UpdateChecker(this, (response, version)-> {
                 switch (response) {
-                    case LATEST -> getLogger().info("Running latest version!");
-                    case UNAVAILABLE -> getLogger().info("Unable to check for new version");
-                    case FOUND_NEW -> getLogger().warning("Running outdated version! New version available:" + version);
+                    case LATEST: {
+                        getLogger().info("Running latest version!");
+                        break;
+                    }
+                    case UNAVAILABLE: {
+                        getLogger().info("Unable to check for new version");
+                        break;
+                    }
+                    case FOUND_NEW: {
+                        getLogger().warning("Running outdated version! New version available:" + version);
+                        break;
+                    }
                 }
             }).check();
         }

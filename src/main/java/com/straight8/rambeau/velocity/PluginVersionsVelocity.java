@@ -72,9 +72,18 @@ public class PluginVersionsVelocity {
         if (checkUpdates) {
             new UpdateChecker(this, (response, version)-> {
                 switch (response) {
-                    case LATEST -> this.logger.info("Running latest version!");
-                    case UNAVAILABLE -> this.logger.info("Unable to check for new version");
-                    case FOUND_NEW -> this.logger.warn("Running outdated version! New version available:" + version);
+                    case LATEST: {
+                        this.logger.info("Running latest version!");
+                        break;
+                    }
+                    case UNAVAILABLE: {
+                        this.logger.info("Unable to check for new version");
+                        break;
+                    }
+                    case FOUND_NEW: {
+                        this.logger.warn("Running outdated version! New version available:" + version);
+                        break;
+                    }
                 }
             }).check();
         }

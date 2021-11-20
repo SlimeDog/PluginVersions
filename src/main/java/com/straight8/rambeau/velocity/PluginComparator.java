@@ -12,7 +12,7 @@ public class PluginComparator implements Comparator<PluginContainer> {
 			throw new ClassCastException();
 		}
 
-		if(p1 != null && p2 != null) {
+		if(p1 != null && p1.getDescription().getName().isPresent() && p2 != null && p2.getDescription().getName().isPresent()) {
 			String name1 = p1.getDescription().getName().get();
 			String name2 = p2.getDescription().getName().get();
 			if(name1 != null && name2 != null) {
