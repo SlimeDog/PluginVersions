@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.straight8.rambeau</groupId>
   <artifactId>PluginVersions</artifactId>
-  <version>1.0.7</version>
+  <version>1.0.8</version>
   <name>PluginVersions</name>
   <description>List installed plugins and versions alphabetically</description>
   <properties>
@@ -18,6 +18,10 @@
     </pluginRepositories>
 
   <repositories>
+      <repository>
+          <id>minecrell</id>
+          <url>https://repo.minecrell.net/snapshots</url>
+      </repository>
       <repository>
           <id>spigot-repo</id>
           <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
@@ -42,6 +46,13 @@
   
   <dependencies>
       <dependency>
+          <groupId>net.minecrell</groupId>
+          <artifactId>ServerListPlus</artifactId>
+          <version>latest</version>
+          <scope>system</scope>
+          <systemPath>${project.basedir}/libs/ServerListPlus.jar</systemPath>
+      </dependency>
+      <dependency>
           <groupId>org.spigotmc</groupId>
           <artifactId>spigot-api</artifactId>
           <version>1.14.4-R0.1-SNAPSHOT</version>
@@ -52,11 +63,6 @@
           <artifactId>velocity-api</artifactId>
           <version>3.0.1</version>
           <scope>provided</scope>
-      </dependency>
-      <dependency>
-          <groupId>org.spongepowered</groupId>
-          <artifactId>configurate-hocon</artifactId>
-          <version>4.1.2</version>
       </dependency>
       <dependency>
           <groupId>net.md-5</groupId>

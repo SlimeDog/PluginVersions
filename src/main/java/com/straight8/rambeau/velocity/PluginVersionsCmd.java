@@ -72,6 +72,8 @@ public class PluginVersionsCmd implements SimpleCommand {
                 for (PluginContainer p : pluginList) {
                     if(p.getDescription().getName().isPresent()) {
                         n = Math.max(n, p.getDescription().getName().get().length());
+                    } else if(p.getDescription().getId().equalsIgnoreCase("serverlistplus")) {
+                        n = Math.max(n, SLPUtils.getSLPName().length());
                     }
                 }
                 formatString = String.format("%%-%ds %%s", n);
@@ -87,13 +89,16 @@ public class PluginVersionsCmd implements SimpleCommand {
 
                     if(p.getDescription().getName().isPresent() && p.getDescription().getVersion().isPresent()) {
                         sender.sendMessage(Component.text(String.format(formatString, p.getDescription().getName().get(), p.getDescription().getVersion().get())));
+                    } else if(p.getDescription().getId().equalsIgnoreCase("serverlistplus")) {
+                        sender.sendMessage(Component.text(String.format(formatString, SLPUtils.getSLPName(), SLPUtils.getSLPVersion())));
                     }
                 }
             } else {
                 for (PluginContainer p : pluginList) {
                     if(p.getDescription().getName().isPresent() && p.getDescription().getVersion().isPresent()) {
-                        sender.sendMessage(Component.text(String.format(formatString,
-                                p.getDescription().getName().get(), p.getDescription().getVersion().get())));
+                        sender.sendMessage(Component.text(String.format(formatString, p.getDescription().getName().get(), p.getDescription().getVersion().get())));
+                    } else if(p.getDescription().getId().equalsIgnoreCase("serverlistplus")) {
+                        sender.sendMessage(Component.text(String.format(formatString, SLPUtils.getSLPName(), SLPUtils.getSLPVersion())));
                     }
                 }
             }
