@@ -16,7 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-@Plugin(id = "pluginversions", name = "PluginVersions", version = "1.0.9", description = "List installed plugins and versions alphabetically", authors = {"drives_a_ford", "GabrielHD150", "SlimeDog"})
+@Plugin(id = "pluginversions", name = "PluginVersions", version = "1.1.0", description = "List installed plugins and versions alphabetically", authors = {"drives_a_ford", "GabrielHD150", "SlimeDog"})
 public class PluginVersionsVelocity {
 
     private static PluginVersionsVelocity instance;
