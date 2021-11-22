@@ -1,10 +1,11 @@
-**PluginVersions 1.1.0**
+## PluginVersions 1.1.0
 
-**Product Description**
+### Product Description
 Create an alphabetically-sorted list of loaded plugins and versions.
 
-**Tested Environments**
+### Tested Environments
 **PluginVersions** was originally written for Spigot 1.8.8, and has worked for every Spigot version since then.
+
 **PluginVersions 1.1.0** was certified on
 - Spigot 1.17.1-3284 and Spigot 1.18-pre5-3293
 - Paper 1.17.1-388
@@ -14,14 +15,20 @@ Create an alphabetically-sorted list of loaded plugins and versions.
 
 All commands may be executed at the console,  in-game with appropriate permissions.
 
-> _pv list_  
+### Commands
+> _pluginversions list_  
 > Create an alphabetically-sorted columnar list of plugins and versions.
 > 
-> _pv reload_  
+> _pluginversions reload_  
 > Reload configuration file.
 > At present, the only configuration option is whether to send metrics to MCStats.org.
-  
-**Permissions**
+
+### Command aliases
+- pv :: Spigot, Paper
+- pvb :: BungeeCord, Waterfall
+- pvv :: Velocity
+
+### Permissions
 Permissions reflect the commands they allow. All permissions default to op.
 
 > _pluginversions.list_
