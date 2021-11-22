@@ -20,10 +20,10 @@ public class YamlConfig {
         if (!PluginVersionsVelocity.getInstance().getDataFolder().exists()) {
             PluginVersionsVelocity.getInstance().getDataFolder().mkdir();
         }
+
         File fileconfig = new File(PluginVersionsVelocity.getInstance().getDataFolder(), file+".yml");
         if (!fileconfig.exists()) {
-            try {
-                InputStream in = PluginVersionsVelocity.getInstance().getResourceAsStream(file+".yml");
+            try (InputStream in = PluginVersionsVelocity.getInstance().getResourceAsStream(file+".yml")) {
                 Files.copy(in, fileconfig.toPath());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -128,7 +128,7 @@ public class YamlConfig {
     }
 
     public int getInt(String path, int def) {
-        if (!contains(path)) {
+        if (!contains(path) && !isSet(path)) {
             return def;
         }
         try {
@@ -143,7 +143,7 @@ public class YamlConfig {
     }
 
     public boolean getBoolean(String path, boolean def) {
-        if (!contains(path)) {
+        if (!contains(path) && !isSet(path)) {
             return def;
         }
         try {
@@ -158,7 +158,7 @@ public class YamlConfig {
     }
 
     public double getDouble(String path, double def) {
-        if (!contains(path)) {
+        if (!contains(path) && !isSet(path)) {
             return def;
         }
         try {
@@ -173,7 +173,7 @@ public class YamlConfig {
     }
 
     public long getLong(String path, long def) {
-        if (!contains(path)) {
+        if (!contains(path) && !isSet(path)) {
             return def;
         }
         try {

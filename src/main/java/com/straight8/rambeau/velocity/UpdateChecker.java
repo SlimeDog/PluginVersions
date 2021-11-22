@@ -23,7 +23,7 @@ public class UpdateChecker {
 
     public UpdateChecker(PluginVersionsVelocity plugin, BiConsumer<VersionResponse, String> consumer) {
         this.plugin = plugin;
-        this.currentVersion = "1.0.8";
+        this.currentVersion = "1.0.9";
         this.versionResponse = consumer;
     }
 
