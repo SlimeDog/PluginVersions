@@ -3,6 +3,7 @@
 # To regenerate the default file content, delete the file and run:
 #		/pv reload
 #
+
 # By default, the plugin collects and transmits anonymous statistics to bstats.org.
 # Data collection may be disabled here, or generally in the bStats/config.yml.
 #
