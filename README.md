@@ -33,3 +33,5 @@ Permissions reflect the commands they allow. All permissions default to op.
 
 > _pluginversions.list_
 > _pluginversions.reload_
+
+<a href="https://www.spigotmc.org/resources/70927/">![download-on-spigot](https://user-images.githubusercontent.com/17748923/187102011-b72e0f1d-ba74-4cb2-a69e-46f48cb364b5.png)</a>
