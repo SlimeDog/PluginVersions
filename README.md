@@ -6,7 +6,7 @@ Create an alphabetically-sorted list of loaded plugins and versions.
 **PluginVersions** was originally written for Spigot 1.8.8, and has worked for every Spigot version since then.
 
 **PluginVersions 1.1.0** was certified on
-- Spigot 1.19.3-3672
+- Spigot 1.19.4-3672
 - Spigot 1.19.3-3649
 - Paper 1.19.3-392
 - BungeeCord 1.19-1678
