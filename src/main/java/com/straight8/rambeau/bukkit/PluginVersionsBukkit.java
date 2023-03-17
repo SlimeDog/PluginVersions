@@ -8,6 +8,9 @@
 package com.straight8.rambeau.bukkit;
 
 import com.straight8.rambeau.metrics.SpigotMetrics;
+
+import dev.ratas.slimedogcore.impl.SlimeDogCore;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,7 +18,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.Arrays;
@@ -24,7 +26,7 @@ import java.util.logging.Logger;
 // import org.bukkit.Bukkit;
 // Imports for Metrics
 
-public class PluginVersionsBukkit extends JavaPlugin {
+public class PluginVersionsBukkit extends SlimeDogCore {
 	public final Logger logger = Logger.getLogger("Minecraft");
 	
     // Configuration values:
@@ -33,7 +35,7 @@ public class PluginVersionsBukkit extends JavaPlugin {
 
 	// Fired when plugin is first enabled
     @Override
-    public void onEnable() {
+    public void pluginEnabled() {
     	// Enable is logged automatically.
     	
     	// Create config.yml and plugin directory tree, if they do not exist.
@@ -69,7 +71,7 @@ public class PluginVersionsBukkit extends JavaPlugin {
     
     // Fired when plugin is disabled
     @Override
-    public void onDisable() {
+    public void pluginDisabled() {
     	// Disable is logged automatically.
 	}
 
