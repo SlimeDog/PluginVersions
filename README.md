@@ -5,10 +5,16 @@ Create an alphabetically-sorted list of loaded plugins and versions.
 ### Tested Environments
 **PluginVersions** was originally written for Spigot 1.8.8, and has worked for every Spigot version since then.
 
-**PluginVersions 1.1.0** was certified on
+**PluginVersions 1.1.2** was certified on
+- Paper 1.19.4-457
 - Spigot 1.19.4-3672
-- Spigot 1.19.3-3649
+- BungeeCord 1.19-1686
+- Waterfall 1.19-515
+- Velocity 3.2.0-243
+
+**PluginVersions 1.1.0** was certified on
 - Paper 1.19.3-392
+- Spigot 1.19.3-3649
 - BungeeCord 1.19-1678
 - Waterfall 1.19-510
 - Velocity 3.2.0-225
