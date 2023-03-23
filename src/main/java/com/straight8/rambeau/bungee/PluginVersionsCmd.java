@@ -1,5 +1,6 @@
 package com.straight8.rambeau.bungee;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
@@ -62,23 +63,6 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
             // Set page to 0 if illegal page was requested
             page = Math.max(page, 0);
 
-            String formatString;
-            if (sender instanceof ProxiedPlayer) {
-                // Output only one page if the command was invoked in-game
-                if (page == 0) {
-                    page = 1;
-                }
-                // In-game chat font is variable-pitch, so tabular format is pointless.
-                formatString = String.format("%%s %%s");
-            } else {
-                // Construct a tablular format for fixed-pitch fonts, like log and console.
-                int n = 1;
-                for (Plugin p : pluginList) {
-                    n = Math.max(n, p.getDescription().getName().length());
-                }
-                formatString = String.format("%%-%ds %%s", n);
-            }
-
             int linesPerPage = 10;
             if (page > 0) {
                 if (((page - 1) * linesPerPage) < pluginList.size()) {
@@ -86,13 +70,15 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
                 }
                 for (int i = ((page - 1) * linesPerPage); i < pluginList.size() && i < (page * linesPerPage); i++) {
                     Plugin p = pluginList.get(i);
-                    sender.sendMessage(String.format(formatString,
-                            p.getDescription().getName(), p.getDescription().getVersion()));
+                    String header = color(plugin.getConfig().getString("page-header-format",
+                            "PluginVersions ===== page {page} ====="));
+                    sender.sendMessage(header.replace("{page}", String.valueOf(page)));
                 }
             } else {
                 for (Plugin p : pluginList) {
-                    sender.sendMessage(String.format(formatString,
-                            p.getDescription().getName(), p.getDescription().getVersion()));
+                    String msg = plugin.getConfig().getString("enabled-version-format", " - &a{name} &e{version}");
+                    sender.sendMessage(msg.replace("{name}", p.getDescription().getName()).replace("{version}",
+                            p.getDescription().getVersion()));
                 }
             }
             // break;
@@ -123,6 +109,10 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public static String color(String msg) {
+        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
 }
