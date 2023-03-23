@@ -4,11 +4,18 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.plugin.TabExecutor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class PluginVersionsCmd extends Command {
+import org.bukkit.util.StringUtil;
+
+import com.straight8.rambeau.util.CommandPageUtils;
+
+public class PluginVersionsCmd extends Command implements TabExecutor {
+    private static final int LINES_PER_PAGE = 10;
 
     private final PluginVersionsBungee plugin;
 
@@ -98,4 +105,24 @@ public class PluginVersionsCmd extends Command {
             sender.sendMessage("Unrecognized command option " + cmdLowercase);
         }
     }
+
+    @Override
+    public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
+        if (args.length == 1) {
+            List<String> options = new ArrayList<>();
+            if (sender.hasPermission("pluginversions.list")) {
+                options.add("list");
+            }
+            if (sender.hasPermission("pluginversions.reload")) {
+                options.add("relaod");
+            }
+            return StringUtil.copyPartialMatches(args[0], options, new ArrayList<>());
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("list")) {
+            return CommandPageUtils.getNextInteger(args[1],
+                    (plugin.getProxy().getPluginManager().getPlugins().size() + LINES_PER_PAGE - 1) / LINES_PER_PAGE);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
 }
