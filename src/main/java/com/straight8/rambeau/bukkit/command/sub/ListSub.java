@@ -11,6 +11,7 @@ import com.straight8.rambeau.bukkit.PluginComparator;
 import com.straight8.rambeau.bukkit.PluginVersionsBukkit;
 
 import dev.ratas.slimedogcore.api.commands.SDCCommandOptionSet;
+import dev.ratas.slimedogcore.api.messaging.factory.SDCDoubleContextMessageFactory;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCPlayerRecipient;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.impl.commands.AbstractSubCommand;
@@ -19,8 +20,7 @@ public class ListSub extends AbstractSubCommand {
     private static final String NAME = "list";
     private static final String PERMS = "pluginversions.list";
     private static final String USAGE = "/pv list [page]";
-    private static final int LINES_PER_PAGE = 2;
-    // private static final int LINES_PER_PAGE = 10;
+    private static final int LINES_PER_PAGE = 10;
     private final PluginVersionsBukkit plugin;
 
     public ListSub(PluginVersionsBukkit plugin) {
@@ -57,37 +57,30 @@ public class ListSub extends AbstractSubCommand {
         // Set page to 0 if illegal page was requested
         page = Math.max(page, 0);
 
-        String formatString;
-        if (sender instanceof SDCPlayerRecipient) {
-            // Output only one page if the command was invoked in-game
-            if (page == 0) {
-                page = 1;
-            }
-            // In-game chat font is variable-pitch, so tabular format is pointless.
-            formatString = String.format("%%s %%s");
-        } else {
-            // Construct a tablular format for fixed-pitch fonts, like log and console.
-            int n = 1;
-            for (Plugin p : pluginList) {
-                n = Math.max(n, p.getName().length());
-            }
-            formatString = String.format("%%-%ds %%s", n);
-        }
-        sender.sendRawMessage("PAGE: " + page);
-
         if (page > 0) {
             if (((page - 1) * LINES_PER_PAGE) < pluginList.length) {
-                sender.sendRawMessage("PluginVersions ===== page " + page + " =====");
+                sender.sendMessage(plugin.getMessages().getPageHeader().createWith(page));
             }
             for (int i = ((page - 1) * LINES_PER_PAGE); i < pluginList.length && i < (page * LINES_PER_PAGE); i++) {
                 Plugin p = pluginList[i];
-                sender.sendRawMessage(String.format(formatString,
-                        p.getName(), p.getDescription().getVersion()));
+
+                SDCDoubleContextMessageFactory<String, String> msg;
+                if (p.isEnabled()) {
+                    msg = plugin.getMessages().getEnabledVersion();
+                } else {
+                    msg = plugin.getMessages().getDisabledVersion();
+                }
+                sender.sendMessage(msg.createWith(p.getName(), p.getDescription().getVersion()));
             }
         } else {
             for (Plugin p : pluginList) {
-                sender.sendRawMessage(String.format(formatString,
-                        p.getName(), p.getDescription().getVersion()));
+                SDCDoubleContextMessageFactory<String, String> msg;
+                if (p.isEnabled()) {
+                    msg = plugin.getMessages().getEnabledVersion();
+                } else {
+                    msg = plugin.getMessages().getDisabledVersion();
+                }
+                sender.sendMessage(msg.createWith(p.getName(), p.getDescription().getVersion()));
             }
         }
         return true;

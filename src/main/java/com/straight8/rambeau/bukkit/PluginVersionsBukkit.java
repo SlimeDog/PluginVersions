@@ -23,6 +23,8 @@ import java.util.logging.Logger;
 
 public class PluginVersionsBukkit extends SlimeDogCore {
 	public final Logger logger = Logger.getLogger("Minecraft");
+
+	private Messages messages;
 	
     // Configuration values:
 	private boolean configurationSendMetrics = true;
@@ -63,8 +65,14 @@ public class PluginVersionsBukkit extends SlimeDogCore {
 			}).check();
 		}
 
+		messages = new Messages(getDefaultConfig());
+
 		getCommand("pluginversions").setExecutor(new PluginVersionsCommand(this));
     }
+
+	public Messages getMessages() {
+		return messages;
+	}
     
     // Fired when plugin is disabled
     @Override

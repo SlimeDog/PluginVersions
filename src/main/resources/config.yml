@@ -12,3 +12,7 @@ enable-metrics: true
 # Check for updates.
 
 check-for-updates: true
+
+page-header-format: "PluginVersions ===== page {page} ====="
+enabled-version-format: " - &a{name} &e{version}"
+disabled-version-format: " - &c{name} &e{version}"
