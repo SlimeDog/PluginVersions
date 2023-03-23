@@ -58,27 +58,6 @@ public class PluginVersionsCmd implements SimpleCommand {
             // Set page to 0 if illegal page was requested
             page = Math.max(page, 0);
 
-            String formatString;
-            if (sender instanceof Player) {
-                // Output only one page if the command was invoked in-game
-                if (page == 0) {
-                    page = 1;
-                }
-                // In-game chat font is variable-pitch, so tabular format is pointless.
-                formatString = String.format("%%s %%s");
-            } else {
-                // Construct a tablular format for fixed-pitch fonts, like log and console.
-                int n = 1;
-                for (PluginContainer p : pluginList) {
-                    if(p.getDescription().getName().isPresent()) {
-                        n = Math.max(n, p.getDescription().getName().get().length());
-                    } else if(p.getDescription().getId().equalsIgnoreCase("serverlistplus")) {
-                        n = Math.max(n, SLPUtils.getSLPName().length());
-                    }
-                }
-                formatString = String.format("%%-%ds %%s", n);
-            }
-
             int linesPerPage = 10;
             if (page > 0) {
                 if (((page - 1) * linesPerPage) < pluginList.size()) {
@@ -87,18 +66,32 @@ public class PluginVersionsCmd implements SimpleCommand {
                 for (int i = ((page - 1) * linesPerPage); i < pluginList.size() && i < (page * linesPerPage); i++) {
                     PluginContainer p = pluginList.get(i);
 
+                    String msg = plugin.getConfig().getString("enabled-version-format", " - &a{name} &e{version}");
                     if(p.getDescription().getName().isPresent() && p.getDescription().getVersion().isPresent()) {
-                        sender.sendMessage(Component.text(String.format(formatString, p.getDescription().getName().get(), p.getDescription().getVersion().get())));
+                        Component comp = Component
+                                .text(msg.replace("{name}", p.getDescription().getName().get()).replace("{version}",
+                                        p.getDescription().getVersion().get()));
+                        sender.sendMessage(comp);
                     } else if(p.getDescription().getId().equalsIgnoreCase("serverlistplus")) {
-                        sender.sendMessage(Component.text(String.format(formatString, SLPUtils.getSLPName(), SLPUtils.getSLPVersion())));
+                        Component comp = Component
+                                .text(msg.replace("{name}", SLPUtils.getSLPName()).replace("{version}",
+                                        SLPUtils.getSLPVersion()));
+                        sender.sendMessage(comp);
                     }
                 }
             } else {
                 for (PluginContainer p : pluginList) {
+                    String msg = plugin.getConfig().getString("enabled-version-format", " - &a{name} &e{version}");
                     if(p.getDescription().getName().isPresent() && p.getDescription().getVersion().isPresent()) {
-                        sender.sendMessage(Component.text(String.format(formatString, p.getDescription().getName().get(), p.getDescription().getVersion().get())));
+                        Component comp = Component
+                                .text(msg.replace("{name}", p.getDescription().getName().get()).replace("{version}",
+                                        p.getDescription().getVersion().get()));
+                        sender.sendMessage(comp);
                     } else if(p.getDescription().getId().equalsIgnoreCase("serverlistplus")) {
-                        sender.sendMessage(Component.text(String.format(formatString, SLPUtils.getSLPName(), SLPUtils.getSLPVersion())));
+                        Component comp = Component
+                                .text(msg.replace("{name}", SLPUtils.getSLPName()).replace("{version}",
+                                        SLPUtils.getSLPVersion()));
+                        sender.sendMessage(comp);
                     }
                 }
             }
