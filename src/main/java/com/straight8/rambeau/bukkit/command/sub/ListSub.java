@@ -1,6 +1,5 @@
 package com.straight8.rambeau.bukkit.command.sub;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +8,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.straight8.rambeau.bukkit.PluginComparator;
 import com.straight8.rambeau.bukkit.PluginVersionsBukkit;
+import com.straight8.rambeau.util.CommandPageUtils;
 
 import dev.ratas.slimedogcore.api.commands.SDCCommandOptionSet;
 import dev.ratas.slimedogcore.api.messaging.factory.SDCDoubleContextMessageFactory;
@@ -31,7 +31,7 @@ public class ListSub extends AbstractSubCommand {
     @Override
     public List<String> onTabComplete(SDCRecipient sender, String[] args) {
         if (args.length == 1 && !(sender instanceof SDCPlayerRecipient)) {
-            return getNextInteger(args[0],
+            return CommandPageUtils.getNextInteger(args[0],
                     (plugin.getServer().getPluginManager().getPlugins().length + LINES_PER_PAGE - 1) / LINES_PER_PAGE);
         }
         return Collections.emptyList();
@@ -84,39 +84,6 @@ public class ListSub extends AbstractSubCommand {
             }
         }
         return true;
-    }
-
-    private static final boolean isInteger(String str) {
-        try {
-            Integer.valueOf(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    private static final List<String> getNextInteger(String argument, int maxPage) {
-        List<String> options = new ArrayList<>();
-        int curNr;
-        if (argument.isEmpty()) {
-            curNr = 0;
-        } else if (!isInteger(argument)) {
-            return options;
-        } else {
-            curNr = Integer.valueOf(argument);
-        }
-        if (curNr * 10 > maxPage) {
-            return options;
-        }
-        int example = 10 * curNr;
-        while (example <= maxPage && example < 10 * (curNr + 1)) {
-            if (example != 0) {
-                // don't send 0
-                options.add(String.valueOf(example));
-            }
-            example++;
-        }
-        return options;
     }
 
 }
