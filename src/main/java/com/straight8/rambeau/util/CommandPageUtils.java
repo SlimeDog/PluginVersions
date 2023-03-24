@@ -43,6 +43,7 @@ public final class CommandPageUtils {
     }
 
     public static <T> List<T> getPage(List<T> items, int page, int perPage) {
+        page = page - 1; // 0-starting page
         List<T> list = new ArrayList<>();
         int startItem = page * perPage;
         int firstExcludedItem = (page + 1) * perPage;
