@@ -66,7 +66,7 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
             if (page > 0) {
                 if (((page - 1) * linesPerPage) < pluginList.size()) {
                     String msg = color(plugin.getConfig().getString("page-header-format",
-                            "PluginVersions ===== page {page} ====="))
+                            "PluginVersions ===== page {page} ====="));
                     sender.sendMessage("PluginVersions ===== page " + page + " =====");
                 }
                 for (int i = ((page - 1) * linesPerPage); i < pluginList.size() && i < (page * linesPerPage); i++) {
