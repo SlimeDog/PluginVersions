@@ -11,7 +11,7 @@ import com.straight8.rambeau.bukkit.PluginVersionsBukkit;
 import com.straight8.rambeau.util.CommandPageUtils;
 
 import dev.ratas.slimedogcore.api.commands.SDCCommandOptionSet;
-import dev.ratas.slimedogcore.api.messaging.factory.SDCDoubleContextMessageFactory;
+import dev.ratas.slimedogcore.api.messaging.factory.SDCTripleContextMessageFactory;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCPlayerRecipient;
 import dev.ratas.slimedogcore.api.messaging.recipient.SDCRecipient;
 import dev.ratas.slimedogcore.impl.commands.AbstractSubCommand;
@@ -61,26 +61,37 @@ public class ListSub extends AbstractSubCommand {
             if (((page - 1) * LINES_PER_PAGE) < pluginList.length) {
                 sender.sendMessage(plugin.getMessages().getPageHeader().createWith(page));
             }
+            int maxSpacing = CommandPageUtils.getMaxNameLength(plugin -> plugin.getName(),
+                    CommandPageUtils.getPage(Arrays.asList(pluginList), page, LINES_PER_PAGE));
             for (int i = ((page - 1) * LINES_PER_PAGE); i < pluginList.length && i < (page * LINES_PER_PAGE); i++) {
                 Plugin p = pluginList[i];
 
-                SDCDoubleContextMessageFactory<String, String> msg;
+                SDCTripleContextMessageFactory<String, String, String> msg;
                 if (p.isEnabled()) {
                     msg = plugin.getMessages().getEnabledVersion();
                 } else {
                     msg = plugin.getMessages().getDisabledVersion();
                 }
-                sender.sendMessage(msg.createWith(p.getName(), p.getDescription().getVersion()));
+                // TODO - fix this - the spacing is incorrect
+                String spacing = CommandPageUtils.getSpacingFor(p.getName(), maxSpacing);
+                System.out.println("Max spacing: " + maxSpacing + " and sapcing now: " + spacing.length()
+                        + " for name with length " + p.getName().length());
+                sender.sendMessage(msg.createWith(p.getName(), spacing, p.getDescription().getVersion()));
             }
         } else {
+            int maxSpacing = CommandPageUtils.getMaxNameLength(plugin -> plugin.getName(), Arrays.asList(pluginList));
             for (Plugin p : pluginList) {
-                SDCDoubleContextMessageFactory<String, String> msg;
+                SDCTripleContextMessageFactory<String, String, String> msg;
                 if (p.isEnabled()) {
                     msg = plugin.getMessages().getEnabledVersion();
                 } else {
                     msg = plugin.getMessages().getDisabledVersion();
                 }
-                sender.sendMessage(msg.createWith(p.getName(), p.getDescription().getVersion()));
+                String spacing = CommandPageUtils.getSpacingFor(p.getName(), maxSpacing);
+                System.out.println("Max spacing: " + maxSpacing + " and sapcing now: " + spacing.length()
+                        + " for name with length " + p.getName().length());
+                System.out.println(p.getName() + spacing + p.getDescription().getVersion());
+                sender.sendMessage(msg.createWith(p.getName(), spacing, p.getDescription().getVersion()));
             }
         }
         return true;
