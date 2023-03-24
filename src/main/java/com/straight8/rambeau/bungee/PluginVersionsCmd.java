@@ -64,6 +64,8 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
 
             int linesPerPage = 10;
             if (page > 0) {
+                int maxSpacing = CommandPageUtils.getMaxNameLength(plugin -> plugin.getDescription().getName(),
+                        CommandPageUtils.getPage(pluginList, page, LINES_PER_PAGE));
                 if (((page - 1) * linesPerPage) < pluginList.size()) {
                     String msg = color(plugin.getConfig().getString("page-header-format",
                             "PluginVersions ===== page {page} ====="));
@@ -71,15 +73,20 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
                 }
                 for (int i = ((page - 1) * linesPerPage); i < pluginList.size() && i < (page * linesPerPage); i++) {
                     Plugin p = pluginList.get(i);
-                    String header = color(plugin.getConfig().getString("page-header-format",
-                            "PluginVersions ===== page {page} ====="));
-                    sender.sendMessage(header.replace("{page}", String.valueOf(page)));
+                    String msg = color(
+                            plugin.getConfig().getString("enabled-version-format", "&a{name}{spacing}&e{version}"));
+                    String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName(), maxSpacing);
+                    sender.sendMessage(msg.replace("{name}", p.getDescription().getName()).replace("{version}",
+                            p.getDescription().getVersion()).replace("{spacing}", spacing));
                 }
             } else {
+                int maxSpacing = CommandPageUtils.getMaxNameLength(plugin -> plugin.getDescription().getName(),
+                        pluginList);
                 for (Plugin p : pluginList) {
-                    String msg = color(plugin.getConfig().getString("enabled-version-format", " - &a{name} &e{version}"));
+                    String msg = color(plugin.getConfig().getString("enabled-version-format", "&a{name}{spacing}&e{version}"));
+                    String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName(), maxSpacing);
                     sender.sendMessage(msg.replace("{name}", p.getDescription().getName()).replace("{version}",
-                            p.getDescription().getVersion()));
+                            p.getDescription().getVersion()).replace("{spacing}", spacing));
                 }
             }
             // break;
