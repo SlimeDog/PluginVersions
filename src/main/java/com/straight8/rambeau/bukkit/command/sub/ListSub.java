@@ -74,8 +74,6 @@ public class ListSub extends AbstractSubCommand {
                 }
                 // TODO - fix this - the spacing is incorrect
                 String spacing = CommandPageUtils.getSpacingFor(p.getName(), maxSpacing);
-                System.out.println("Max spacing: " + maxSpacing + " and sapcing now: " + spacing.length()
-                        + " for name with length " + p.getName().length());
                 sender.sendMessage(msg.createWith(p.getName(), spacing, p.getDescription().getVersion()));
             }
         } else {
@@ -88,9 +86,6 @@ public class ListSub extends AbstractSubCommand {
                     msg = plugin.getMessages().getDisabledVersion();
                 }
                 String spacing = CommandPageUtils.getSpacingFor(p.getName(), maxSpacing);
-                System.out.println("Max spacing: " + maxSpacing + " and sapcing now: " + spacing.length()
-                        + " for name with length " + p.getName().length());
-                System.out.println(p.getName() + spacing + p.getDescription().getVersion());
                 sender.sendMessage(msg.createWith(p.getName(), spacing, p.getDescription().getVersion()));
             }
         }
