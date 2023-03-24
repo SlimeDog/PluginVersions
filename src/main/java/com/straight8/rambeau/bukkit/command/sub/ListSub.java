@@ -72,7 +72,6 @@ public class ListSub extends AbstractSubCommand {
                 } else {
                     msg = plugin.getMessages().getDisabledVersion();
                 }
-                // TODO - fix this - the spacing is incorrect
                 String spacing = CommandPageUtils.getSpacingFor(p.getName(), maxSpacing);
                 sender.sendMessage(msg.createWith(p.getName(), spacing, p.getDescription().getVersion()));
             }
