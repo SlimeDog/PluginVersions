@@ -6,6 +6,9 @@ import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.plugin.PluginContainer;
 import com.velocitypowered.api.proxy.Player;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +38,8 @@ public class PluginVersionsCmd implements SimpleCommand {
             if (!sender.hasPermission("pluginversions." + cmdLowercase)) {
                 String senderName = ((Player) sender).getUsername();
                 sender.sendMessage(Component.text("You do not have permission to run this command"));
-                this.plugin.log(senderName + " attempted to run command pv " + cmdLowercase + ", but lacked permissions");
+                this.plugin
+                        .log(senderName + " attempted to run command pv " + cmdLowercase + ", but lacked permissions");
                 return;
             }
         }
@@ -65,7 +69,7 @@ public class PluginVersionsCmd implements SimpleCommand {
                 if (((page - 1) * LINES_PER_PAGE) < pluginList.size()) {
                     String msg = plugin.getConfig().getString("page-header-format",
                             "PluginVersions ===== page {page} =====");
-                    sender.sendMessage(Component.text(msg.replace("{page}", String.valueOf(page))));
+                    sender.sendMessage(Color.color(msg.replace("{page}", String.valueOf(page))));
                 }
                 int maxSpacing = CommandPageUtils.getMaxNameLength(plugin -> {
                     Optional<String> name = plugin.getDescription().getName();
@@ -75,17 +79,16 @@ public class PluginVersionsCmd implements SimpleCommand {
                     PluginContainer p = pluginList.get(i);
 
                     String msg = plugin.getConfig().getString("enabled-version-format", "&a{name}{spacing}&e{version}");
-                    if(p.getDescription().getName().isPresent() && p.getDescription().getVersion().isPresent()) {
+                    if (p.getDescription().getName().isPresent() && p.getDescription().getVersion().isPresent()) {
                         String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName().get(), maxSpacing);
-                        Component comp = Component
-                                .text(msg.replace("{name}", p.getDescription().getName().get()).replace("{version}",
+                        Component comp = Color
+                                .color(msg.replace("{name}", p.getDescription().getName().get()).replace("{version}",
                                         p.getDescription().getVersion().get()).replace("{spacing}", spacing));
                         sender.sendMessage(comp);
-                    } else if(p.getDescription().getId().equalsIgnoreCase("serverlistplus")) {
+                    } else if (p.getDescription().getId().equalsIgnoreCase("serverlistplus")) {
                         String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName().get(), maxSpacing);
-                        Component comp = Component
-                                .text(msg.replace("{name}", SLPUtils.getSLPName()).replace("{version}",
-                                        SLPUtils.getSLPVersion()).replace("{spacing}", spacing));
+                        Component comp = Color.color(msg.replace("{name}", SLPUtils.getSLPName()).replace("{version}",
+                                SLPUtils.getSLPVersion()).replace("{spacing}", spacing));
                         sender.sendMessage(comp);
                     }
                 }
@@ -96,23 +99,23 @@ public class PluginVersionsCmd implements SimpleCommand {
                 }, pluginList);
                 for (PluginContainer p : pluginList) {
                     String msg = plugin.getConfig().getString("enabled-version-format", "&a{name}{spacing}&e{version}");
-                    if(p.getDescription().getName().isPresent() && p.getDescription().getVersion().isPresent()) {
+                    if (p.getDescription().getName().isPresent() && p.getDescription().getVersion().isPresent()) {
                         String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName().get(), maxSpacing);
-                        Component comp = Component
-                                .text(msg.replace("{name}", p.getDescription().getName().get()).replace("{version}",
+                        Component comp = Color
+                                .color(msg.replace("{name}", p.getDescription().getName().get()).replace("{version}",
                                         p.getDescription().getVersion().get()).replace("{spacing}", spacing));
                         sender.sendMessage(comp);
-                    } else if(p.getDescription().getId().equalsIgnoreCase("serverlistplus")) {
+                    } else if (p.getDescription().getId().equalsIgnoreCase("serverlistplus")) {
                         String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName().get(), maxSpacing);
-                        Component comp = Component
-                                .text(msg.replace("{name}", p.getDescription().getName().get()).replace("{version}",
+                        Component comp = Color
+                                .color(msg.replace("{name}", p.getDescription().getName().get()).replace("{version}",
                                         p.getDescription().getVersion().get()).replace("{spacing}", spacing));
                         sender.sendMessage(comp);
                     }
                 }
             }
             // break;
-        } else if(cmdLowercase.equals("reload")) {
+        } else if (cmdLowercase.equals("reload")) {
             YamlConfig.createFiles("config");
             PluginVersionsVelocity.getInstance().ReadConfigValuesFromFile();
 
@@ -121,4 +124,70 @@ public class PluginVersionsCmd implements SimpleCommand {
             sender.sendMessage(Component.text("Unrecognized command option " + cmdLowercase));
         }
     }
+
+    private static final char COLOR_STR = '&';
+
+    private static enum Color {
+        BLACK('0', NamedTextColor.BLACK),
+        DARK_BLUE('1', NamedTextColor.DARK_BLUE),
+        DARK_GREEN('2', NamedTextColor.DARK_GREEN),
+        DARK_AQUA('3', NamedTextColor.DARK_AQUA),
+        DARK_RED('4', NamedTextColor.DARK_RED),
+        DARK_PURPLE('5', NamedTextColor.DARK_PURPLE),
+        GOLD('6', NamedTextColor.GOLD),
+        GRAY('7', NamedTextColor.GRAY),
+        DARK_GRAY('8', NamedTextColor.DARK_GRAY),
+        BLUE('9', NamedTextColor.BLUE),
+        GREEN('a', NamedTextColor.GREEN),
+        AQUA('b', NamedTextColor.AQUA),
+        RED('c', NamedTextColor.RED),
+        LIGHT_PURPLE('d', NamedTextColor.LIGHT_PURPLE),
+        YELLOW('e', NamedTextColor.YELLOW),
+        WHITE('f', NamedTextColor.WHITE),
+        // MAGIC('k', NamedTextColor.MAGIC),
+        BOLD('l', NamedTextColor.BLUE),
+        // UNDERLINE('n', NamedTextColor.UNDERLINE),
+        // ITALIC('o', NamedTextColor.ITALIC),
+        // RESET('r', NamedTextColor.RESET),
+        ;
+
+        private static final String COLOR_CHARS;
+
+        private final char c;
+        private final TextColor color;
+
+        private Color(char c, TextColor color) {
+            this.c = c;
+            this.color = color;
+        }
+
+        public static Component color(String msg) {
+            List<Component> compList = new ArrayList<>();
+            char[] charArray = msg.toCharArray();
+            TextColor nextColor = NamedTextColor.BLACK;
+            int curStart = 0;
+            for (int i = 0; i <= msg.length() - 1; i++) {
+                char potColorChar = charArray[i];
+                char charAfter = charArray[i + 1];
+                int index = COLOR_CHARS.indexOf(String.valueOf(charAfter));
+                if (potColorChar == COLOR_STR && index >= 0) {
+                    nextColor = values()[index].color;
+                    String msgUntil = msg.substring(curStart, index + 1);
+                    compList.add(Component.text(msgUntil, nextColor));
+                    curStart = i + 1;
+                }
+            }
+            return Component.join(JoinConfiguration.noSeparators(), compList);
+        }
+
+        static {
+            StringBuilder colorChars = new StringBuilder();
+            for (Color color : values()) {
+                colorChars.append(color.c);
+            }
+            COLOR_CHARS = colorChars.toString();
+        }
+
+    }
+
 }
