@@ -56,7 +56,10 @@ public final class CommandPageUtils {
         return list;
     }
 
-    public static final String getSpacingFor(String name, int maxLength) {
+    public static final String getSpacingFor(String name, int maxLength, boolean isPlayer) {
+        if (isPlayer) {
+            return " ";
+        }
         return " ".repeat(maxLength - name.length());
     }
 

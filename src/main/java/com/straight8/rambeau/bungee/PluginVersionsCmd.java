@@ -91,7 +91,8 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
                     Plugin p = pluginList.get(i);
                     String msg = color(
                             plugin.getConfig().getString("enabled-version-format", "&a{name}{spacing}&e{version}"));
-                    String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName(), maxSpacing);
+                    String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName(), maxSpacing,
+                            sender instanceof ProxiedPlayer);
                     sender.sendMessage(msg.replace("{name}", p.getDescription().getName()).replace("{version}",
                             p.getDescription().getVersion()).replace("{spacing}", spacing));
                 }
@@ -101,7 +102,8 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
                 for (Plugin p : pluginList) {
                     String msg = color(
                             plugin.getConfig().getString("enabled-version-format", "&a{name}{spacing}&e{version}"));
-                    String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName(), maxSpacing);
+                    String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName(), maxSpacing,
+                            sender instanceof ProxiedPlayer);
                     sender.sendMessage(msg.replace("{name}", p.getDescription().getName()).replace("{version}",
                             p.getDescription().getVersion()).replace("{spacing}", spacing));
                 }

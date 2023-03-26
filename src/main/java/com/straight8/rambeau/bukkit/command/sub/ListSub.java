@@ -72,7 +72,8 @@ public class ListSub extends AbstractSubCommand {
                 } else {
                     msg = plugin.getMessages().getDisabledVersion();
                 }
-                String spacing = CommandPageUtils.getSpacingFor(p.getName(), maxSpacing);
+                String spacing = CommandPageUtils.getSpacingFor(p.getName(), maxSpacing,
+                        sender instanceof SDCPlayerRecipient);
                 sender.sendMessage(msg.createWith(p.getName(), spacing, p.getDescription().getVersion()));
             }
         } else {
@@ -84,7 +85,8 @@ public class ListSub extends AbstractSubCommand {
                 } else {
                     msg = plugin.getMessages().getDisabledVersion();
                 }
-                String spacing = CommandPageUtils.getSpacingFor(p.getName(), maxSpacing);
+                String spacing = CommandPageUtils.getSpacingFor(p.getName(), maxSpacing,
+                        sender instanceof SDCPlayerRecipient);
                 sender.sendMessage(msg.createWith(p.getName(), spacing, p.getDescription().getVersion()));
             }
         }

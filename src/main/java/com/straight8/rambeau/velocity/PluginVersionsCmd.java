@@ -97,14 +97,14 @@ public class PluginVersionsCmd implements RawCommand {
                     PluginContainer p = pluginList.get(i);
 
                     String msg = plugin.getConfig().getString("enabled-version-format", "&a{name}{spacing}&e{version}");
+                    String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName().get(), maxSpacing,
+                            sender instanceof Player);
                     if (p.getDescription().getName().isPresent() && p.getDescription().getVersion().isPresent()) {
-                        String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName().get(), maxSpacing);
                         Component comp = Color
                                 .color(msg.replace("{name}", p.getDescription().getName().get()).replace("{version}",
                                         p.getDescription().getVersion().get()).replace("{spacing}", spacing));
                         sender.sendMessage(comp);
                     } else if (p.getDescription().getId().equalsIgnoreCase("serverlistplus")) {
-                        String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName().get(), maxSpacing);
                         Component comp = Color.color(msg.replace("{name}", SLPUtils.getSLPName()).replace("{version}",
                                 SLPUtils.getSLPVersion()).replace("{spacing}", spacing));
                         sender.sendMessage(comp);
@@ -117,14 +117,14 @@ public class PluginVersionsCmd implements RawCommand {
                 }, pluginList);
                 for (PluginContainer p : pluginList) {
                     String msg = plugin.getConfig().getString("enabled-version-format", "&a{name}{spacing}&e{version}");
+                    String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName().get(), maxSpacing,
+                            sender instanceof Player);
                     if (p.getDescription().getName().isPresent() && p.getDescription().getVersion().isPresent()) {
-                        String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName().get(), maxSpacing);
                         Component comp = Color
                                 .color(msg.replace("{name}", p.getDescription().getName().get()).replace("{version}",
                                         p.getDescription().getVersion().get()).replace("{spacing}", spacing));
                         sender.sendMessage(comp);
                     } else if (p.getDescription().getId().equalsIgnoreCase("serverlistplus")) {
-                        String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName().get(), maxSpacing);
                         Component comp = Color
                                 .color(msg.replace("{name}", p.getDescription().getName().get()).replace("{version}",
                                         p.getDescription().getVersion().get()).replace("{spacing}", spacing));
