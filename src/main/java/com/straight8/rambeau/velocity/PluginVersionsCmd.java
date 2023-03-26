@@ -46,7 +46,7 @@ public class PluginVersionsCmd implements RawCommand {
         // Get the arguments after the command alias
         String[] args = invocation.arguments().split(" ");
 
-        if (args.length == 0) {
+        if (args.length == 0 || args[0].isEmpty()) {
             showUsage(invocation);
             return;
         }
