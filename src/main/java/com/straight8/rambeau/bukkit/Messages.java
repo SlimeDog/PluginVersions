@@ -26,6 +26,12 @@ public class Messages extends MessagesBase {
                 version -> version, getRawMessage("disabled-version-format", " - &c{name}{spacing}&e{version}"));
     }
 
+    @Override
+    public void reload() {
+        super.reload();
+        load();
+    }
+
     public SDCSingleContextMessageFactory<Integer> getPageHeader() {
         return pageHeader;
     }

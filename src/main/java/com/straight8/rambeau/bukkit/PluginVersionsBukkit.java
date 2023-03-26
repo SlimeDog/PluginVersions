@@ -124,6 +124,9 @@ public class PluginVersionsBukkit extends SlimeDogCore {
 		// Optimized the code to read the configuration options
 		configurationSendMetrics = reloadedConfig.getBoolean("enable-metrics", true);
 		checkUpdates = reloadedConfig.getBoolean("check-for-updates", true);
+		if (messages != null) { // ignore first time around
+			messages.reload();
+		}
 	}
 
     public void log(String logString) {
