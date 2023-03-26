@@ -25,6 +25,21 @@ public class PluginVersionsCmd implements RawCommand {
         this.plugin = plugin;
     }
 
+    private void showUsage(Invocation invocation) {
+        CommandSource source = invocation.source();
+        StringBuilder sb = new StringBuilder();
+        if (source.hasPermission("pluginversions.list")) {
+            sb.append("/pvv list [page]");
+        }
+        if (source.hasPermission("pluginversions.reload")) {
+            if (sb.length() > 1) {
+                sb.append("\n");
+            }
+            sb.append("/pvv reload");
+        }
+        source.sendMessage(Component.text(sb.toString()));
+    }
+
     @Override
     public void execute(Invocation invocation) {
         CommandSource sender = invocation.source();
@@ -32,6 +47,7 @@ public class PluginVersionsCmd implements RawCommand {
         String[] args = invocation.arguments().split(" ");
 
         if (args.length == 0) {
+            showUsage(invocation);
             return;
         }
         String cmdLowercase = args[0].toLowerCase();
