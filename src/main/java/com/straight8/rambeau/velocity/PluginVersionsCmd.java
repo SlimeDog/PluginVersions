@@ -1,8 +1,9 @@
 package com.straight8.rambeau.velocity;
 
 import com.straight8.rambeau.util.CommandPageUtils;
+import com.straight8.rambeau.util.StringUtil;
 import com.velocitypowered.api.command.CommandSource;
-import com.velocitypowered.api.command.SimpleCommand;
+import com.velocitypowered.api.command.RawCommand;
 import com.velocitypowered.api.plugin.PluginContainer;
 import com.velocitypowered.api.proxy.Player;
 import net.kyori.adventure.text.Component;
@@ -11,10 +12,11 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class PluginVersionsCmd implements SimpleCommand {
+public class PluginVersionsCmd implements RawCommand {
     private static final int LINES_PER_PAGE = 10;
 
     private final PluginVersionsVelocity plugin;
@@ -27,7 +29,7 @@ public class PluginVersionsCmd implements SimpleCommand {
     public void execute(Invocation invocation) {
         CommandSource sender = invocation.source();
         // Get the arguments after the command alias
-        String[] args = invocation.arguments();
+        String[] args = invocation.arguments().split(" ");
 
         if (args.length == 0) {
             return;
@@ -122,6 +124,26 @@ public class PluginVersionsCmd implements SimpleCommand {
             sender.sendMessage(Component.text("Reloaded §bPluginVersions/config.yml"));
         } else {
             sender.sendMessage(Component.text("Unrecognized command option " + cmdLowercase));
+        }
+    }
+
+    @Override
+    public List<String> suggest(Invocation invocation) {
+        String[] args = invocation.arguments().split(" ");
+        if (args.length == 1) {
+            List<String> options = new ArrayList<>();
+            if (invocation.source().hasPermission("pluginversions.list")) {
+                options.add("list");
+            }
+            if (invocation.source().hasPermission("pluginversions.reload")) {
+                options.add("relaod");
+            }
+            return StringUtil.copyPartialMatches(args[0], options, new ArrayList<>());
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("list")) {
+            return CommandPageUtils.getNextInteger(args[1],
+                    (plugin.getServer().getPluginManager().getPlugins().size() + LINES_PER_PAGE - 1) / LINES_PER_PAGE);
+        } else {
+            return Collections.emptyList();
         }
     }
 
