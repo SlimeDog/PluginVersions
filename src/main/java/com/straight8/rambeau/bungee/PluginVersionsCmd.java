@@ -25,9 +25,24 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
         this.plugin = plugin;
     }
 
+    private void showUsage(CommandSender source) {
+        StringBuilder sb = new StringBuilder();
+        if (source.hasPermission("pluginversions.list")) {
+            sb.append("/pvv list [page]");
+        }
+        if (source.hasPermission("pluginversions.reload")) {
+            if (sb.length() > 1) {
+                sb.append("\n");
+            }
+            sb.append("/pvv reload");
+        }
+        source.sendMessage(sb.toString());
+    }
+
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length == 0) {
+            showUsage(sender);
             return;
         }
         String cmdLowercase = args[0].toLowerCase();
@@ -36,7 +51,8 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
             if (!sender.hasPermission("pluginversions." + cmdLowercase)) {
                 String senderName = sender.getName();
                 sender.sendMessage("You do not have permission to run this command");
-                this.plugin.log(senderName + " attempted to run command pv " + cmdLowercase + ", but lacked permissions");
+                this.plugin
+                        .log(senderName + " attempted to run command pv " + cmdLowercase + ", but lacked permissions");
                 return;
             }
         }
@@ -83,18 +99,19 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
                 int maxSpacing = CommandPageUtils.getMaxNameLength(plugin -> plugin.getDescription().getName(),
                         pluginList);
                 for (Plugin p : pluginList) {
-                    String msg = color(plugin.getConfig().getString("enabled-version-format", "&a{name}{spacing}&e{version}"));
+                    String msg = color(
+                            plugin.getConfig().getString("enabled-version-format", "&a{name}{spacing}&e{version}"));
                     String spacing = CommandPageUtils.getSpacingFor(p.getDescription().getName(), maxSpacing);
                     sender.sendMessage(msg.replace("{name}", p.getDescription().getName()).replace("{version}",
                             p.getDescription().getVersion()).replace("{spacing}", spacing));
                 }
             }
             // break;
-        } else if(cmdLowercase.equals("reload")) {
+        } else if (cmdLowercase.equals("reload")) {
             YamlConfig.createFiles("config");
             PluginVersionsBungee.getInstance().ReadConfigValuesFromFile();
 
-            sender.sendMessage("Reloaded §bPluginVersions/config.yml" );
+            sender.sendMessage("Reloaded §bPluginVersions/config.yml");
         } else {
             sender.sendMessage("Unrecognized command option " + cmdLowercase);
         }
