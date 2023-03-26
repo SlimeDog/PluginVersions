@@ -164,18 +164,27 @@ public class PluginVersionsCmd implements SimpleCommand {
         public static Component color(String msg) {
             List<Component> compList = new ArrayList<>();
             char[] charArray = msg.toCharArray();
-            TextColor nextColor = NamedTextColor.BLACK;
-            int curStart = 0;
-            for (int i = 0; i <= msg.length() - 1; i++) {
+            TextColor nextColor = NamedTextColor.WHITE;
+            boolean prevHadColor = false;
+            int lastEnd = -2;
+            for (int i = 0; i < charArray.length - 1; i++) {
+                if (prevHadColor) {
+                    prevHadColor = false;
+                    continue;
+                }
                 char potColorChar = charArray[i];
                 char charAfter = charArray[i + 1];
                 int index = COLOR_CHARS.indexOf(String.valueOf(charAfter));
                 if (potColorChar == COLOR_STR && index >= 0) {
-                    nextColor = values()[index].color;
-                    String msgUntil = msg.substring(curStart, index + 1);
+                    String msgUntil = msg.substring(lastEnd + 2, i);
                     compList.add(Component.text(msgUntil, nextColor));
-                    curStart = i + 1;
+                    nextColor = values()[index].color;
+                    lastEnd = i;
+                    prevHadColor = true;
                 }
+            }
+            if (lastEnd + 2 < msg.length()) {
+                compList.add(Component.text(msg.substring(lastEnd + 2, msg.length()), nextColor));
             }
             return Component.join(JoinConfiguration.noSeparators(), compList);
         }
