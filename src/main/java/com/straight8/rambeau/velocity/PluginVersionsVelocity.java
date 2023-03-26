@@ -93,6 +93,10 @@ public class PluginVersionsVelocity {
         return instance;
     }
 
+    public YamlConfig getConfig() {
+        return yamlConfig;
+    }
+
     public void ReadConfigValuesFromFile() {
         YamlConfig configNode = this.yamlConfig;
 

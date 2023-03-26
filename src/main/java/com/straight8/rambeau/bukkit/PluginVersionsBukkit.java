@@ -7,20 +7,15 @@
 
 package com.straight8.rambeau.bukkit;
 
+import com.straight8.rambeau.bukkit.command.PluginVersionsCommand;
 import com.straight8.rambeau.metrics.SpigotMetrics;
 
 import dev.ratas.slimedogcore.impl.SlimeDogCore;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 // import org.bukkit.Bukkit;
@@ -28,6 +23,8 @@ import java.util.logging.Logger;
 
 public class PluginVersionsBukkit extends SlimeDogCore {
 	public final Logger logger = Logger.getLogger("Minecraft");
+
+	private Messages messages;
 	
     // Configuration values:
 	private boolean configurationSendMetrics = true;
@@ -67,100 +64,23 @@ public class PluginVersionsBukkit extends SlimeDogCore {
 				}
 			}).check();
 		}
+
+		messages = new Messages(getDefaultConfig());
+
+		getCommand("pluginversions").setExecutor(new PluginVersionsCommand(this));
     }
+
+	public Messages getMessages() {
+		return messages;
+	}
     
     // Fired when plugin is disabled
     @Override
     public void pluginDisabled() {
     	// Disable is logged automatically.
 	}
-
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if (args.length == 0) {
-			return true;
-		}
-		String cmdLowercase = args[0].toLowerCase();
-
-		if (sender instanceof Player) {
-			if (!sender.hasPermission("pluginversions." + cmdLowercase)) {
-				String senderName = getName();
-				sender.sendMessage("You do not have permission to run this command");
-				this.log(senderName + " attempted to run command pv " + cmdLowercase + ", but lacked permissions");
-				return true;
-			}
-		}
-		
-		switch (cmdLowercase) {
-		case "list":
-			Plugin[] pluginList = getServer().getPluginManager().getPlugins();
-			if (pluginList.length == 0) {
-				sender.sendMessage("No plugins loaded");
-				return true;
-			}
-			Arrays.sort(pluginList, new PluginComparator());
-			
-			// Identify the page to display. Page 0 indicates the entire list.
-			int page = 0;
-			if (args.length > 1) {
-				try {
-					page = Integer.parseInt(args[1]);
-				} catch (Exception ignored) {}
-			}
-			// Set page to 0 if illegal page was requested
-			page = Math.max(page, 0);
-
-			String formatString;
-			if (sender instanceof Player) {
-				// Output only one page if the command was invoked in-game
-				if (page == 0) {
-					page = 1;
-				}
-				// In-game chat font is variable-pitch, so tabular format is pointless.
-				formatString = String.format("%%s %%s");
-			} else {
-				// Construct a tablular format for fixed-pitch fonts, like log and console.
-				int n = 1;
-				for ( Plugin p : pluginList ) {
-					n = Math.max(n, p.getName().length());
-				}
-				formatString = String.format("%%-%ds %%s", n);
-			}
-
-			int linesPerPage = 10;
-			if (page > 0) {
-				if (((page-1)*linesPerPage) < pluginList.length) {
-					sender.sendMessage("PluginVersions ===== page " + page + " =====");
-				}
-				for ( int i=((page-1)*linesPerPage); i<pluginList.length && i<(page*linesPerPage); i++ ) {
-					Plugin p = pluginList[i];
-					sender.sendMessage(String.format(formatString,
-							p.getName(), p.getDescription().getVersion()));
-				}
-			}
-			else {
-				for ( Plugin p : pluginList ) {
-					sender.sendMessage(String.format(formatString,
-						p.getName(), p.getDescription().getVersion()));
-				}
-			}
-			return true;
-			// break;
-			
-		case "reload":
-			CreateConfigFileIfMissing();
-			ReadConfigValuesFromFile();
-			sender.sendMessage("Reloaded " + ChatColor.AQUA + this.getName() + "/config.yml" );
-			return true;
-			
-		default:
-			sender.sendMessage("Unrecognized command option " + cmdLowercase);
-			return false;
-			// break;
-		}
-	}
 	
-    private void CreateConfigFileIfMissing() {
+    public void CreateConfigFileIfMissing() {
     	try {
     		PluginDescriptionFile pdfFile = this.getDescription();
     		
@@ -204,6 +124,9 @@ public class PluginVersionsBukkit extends SlimeDogCore {
 		// Optimized the code to read the configuration options
 		configurationSendMetrics = reloadedConfig.getBoolean("enable-metrics", true);
 		checkUpdates = reloadedConfig.getBoolean("check-for-updates", true);
+		if (messages != null) { // ignore first time around
+			messages.reload();
+		}
 	}
 
     public void log(String logString) {

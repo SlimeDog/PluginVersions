@@ -12,6 +12,8 @@ public class PluginVersionsBungee extends Plugin {
     private boolean configurationSendMetrics = true;
     private boolean checkUpdates = true;
 
+    private Configuration config;
+
     @Override
     public void onEnable() {
         instance = this;
@@ -56,6 +58,11 @@ public class PluginVersionsBungee extends Plugin {
         // Optimized the code to read the configuration options
         configurationSendMetrics = reloadedConfig.getBoolean("enable-metrics", true);
         checkUpdates = reloadedConfig.getBoolean("check-for-updates", true);
+        config = reloadedConfig;
+    }
+
+    public Configuration getConfig() {
+        return config;
     }
 
     public void log(String logString) {
