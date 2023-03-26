@@ -130,7 +130,8 @@ public class PluginVersionsCmd implements RawCommand {
     @Override
     public List<String> suggest(Invocation invocation) {
         String[] args = invocation.arguments().split(" ");
-        if (args.length == 1) {
+        if ((args.length == 1 && !invocation.arguments().endsWith(" "))
+                || (args.length == 0 && invocation.arguments().endsWith(" "))) {
             List<String> options = new ArrayList<>();
             if (invocation.source().hasPermission("pluginversions.list")) {
                 options.add("list");
@@ -138,9 +139,14 @@ public class PluginVersionsCmd implements RawCommand {
             if (invocation.source().hasPermission("pluginversions.reload")) {
                 options.add("relaod");
             }
+            if (args.length < 1) {
+                return options;
+            }
             return StringUtil.copyPartialMatches(args[0], options, new ArrayList<>());
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("list")) {
-            return CommandPageUtils.getNextInteger(args[1],
+        } else if (args[0].equalsIgnoreCase("list") && ((args.length == 2 && !invocation.arguments().endsWith(" ")) ||
+                args.length == 1 && invocation.arguments().endsWith(" "))) {
+            String arg = args.length == 2 ? args[1] : "";
+            return CommandPageUtils.getNextInteger(arg,
                     (plugin.getServer().getPluginManager().getPlugins().size() + LINES_PER_PAGE - 1) / LINES_PER_PAGE);
         } else {
             return Collections.emptyList();
