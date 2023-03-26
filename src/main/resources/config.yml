@@ -15,7 +15,7 @@ check-for-updates: true
 
 # When executed at the console,
 # {spacing} will enable tabular output (in-game does not support tabular output).
-# To disable tabular output at the console, remove "{spacing"} from the format strings.
+# To disable tabular output at the console, remove "{spacing}" from the format strings.
 #
 page-header-format: "PluginVersions ===== page {page} ====="
 enabled-version-format: " - &a{name}{spacing}&e{version}"
