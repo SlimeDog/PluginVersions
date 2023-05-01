@@ -1,4 +1,6 @@
 # PluginVersions configuration
+# Both legacy and MiniMessage formats are supported.
+# See https://github.com/SlimeDog/SlimeDogCore/wiki/Formatting-Codes.
 #
 # To regenerate the default file content, delete the file and run:
 #		/pv reload
