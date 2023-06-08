@@ -11,17 +11,22 @@ import com.straight8.rambeau.bukkit.command.PluginVersionsCommand;
 import com.straight8.rambeau.metrics.SpigotMetrics;
 
 import dev.ratas.slimedogcore.impl.SlimeDogCore;
+import dev.ratas.slimedogcore.impl.utils.UpdateChecker;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.io.File;
+import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 
 // import org.bukkit.Bukkit;
 // Imports for Metrics
 
 public class PluginVersionsBukkit extends SlimeDogCore {
+	private static final int SPIGOT_ID = 5509;
+	private static final String HANGAR_AUTHOR = "SlimeDog";
+	private static final String HANGAR_SLUG = "PluginVersions";
 	public final Logger logger = Logger.getLogger("Minecraft");
 
 	private Messages messages;
@@ -47,22 +52,27 @@ public class PluginVersionsBukkit extends SlimeDogCore {
 		}
 
 		if (checkUpdates) {
-			new UpdateChecker(this, (response, version)-> {
-				switch (response) {
-					case LATEST: {
-						getLogger().info("Running latest version!");
-						break;
-					}
-					case UNAVAILABLE: {
-						getLogger().info("Unable to check for new version");
-						break;
-					}
-					case FOUND_NEW: {
-						getLogger().warning("Running outdated version! New version available:" + version);
-						break;
-					}
-				}
-			}).check();
+            String source = getDefaultConfig().getConfig().getString("update-source", "Hangar");
+            BiConsumer<UpdateChecker.VersionResponse, String> consumer = (response, version) -> {
+                switch (response) {
+                    case LATEST:
+                        getLogger().info("Already on latest version");
+                        break;
+                    case FOUND_NEW:
+                        getLogger().info("Found new version: " + version);
+                        break;
+                    case UNAVAILABLE:
+                        getLogger().info("Version information not available");
+                        break;
+                }
+            };
+            UpdateChecker checker;
+            if (source.equalsIgnoreCase("Hangar")) {
+                checker = UpdateChecker.forHangar(this, consumer, HANGAR_AUTHOR, HANGAR_SLUG);
+            } else {
+                checker = UpdateChecker.forSpigot(this, consumer, SPIGOT_ID);
+            }
+            checker.check();
 		}
 
 		messages = new Messages(getDefaultConfig());
