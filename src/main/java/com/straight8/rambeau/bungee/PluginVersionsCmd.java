@@ -28,13 +28,13 @@ public class PluginVersionsCmd extends Command implements TabExecutor {
     private void showUsage(CommandSender source) {
         StringBuilder sb = new StringBuilder();
         if (source.hasPermission("pluginversions.list")) {
-            sb.append("/pvv list [page]");
+            sb.append("/pvb list [page]");
         }
         if (source.hasPermission("pluginversions.reload")) {
             if (sb.length() > 1) {
                 sb.append("\n");
             }
-            sb.append("/pvv reload");
+            sb.append("/pvb reload");
         }
         source.sendMessage(sb.toString());
     }
