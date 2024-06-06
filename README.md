@@ -44,5 +44,5 @@ All commands may be executed at the console, and in-game with appropriate permis
 ### Permissions
 Permissions reflect the commands they allow. All permissions default to op.
 
-> _pluginversions.list_
-> _pluginversions.reload_
+- _pluginversions.list_
+- _pluginversions.reload_
