@@ -37,9 +37,9 @@ All commands may be executed at the console, and in-game with appropriate permis
 > At present, the only configuration option is whether to send metrics to MCStats.org.
 
 ### Command aliases
-> pv :: Spigot, Paper
-> pvb :: BungeeCord, Waterfall
-> pvv :: Velocity
+- pv :: Spigot, Paper
+- pvb :: BungeeCord, Waterfall
+- pvv :: Velocity
 
 ### Permissions
 Permissions reflect the commands they allow. All permissions default to op.
