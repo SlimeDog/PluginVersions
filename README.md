@@ -1,34 +1,34 @@
-# PluginVersions &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://hangar.papermc.io/SlimeDog/PluginVersions">![download-on-hangar](https://user-images.githubusercontent.com/17748923/187102194-00e910e6-ee8e-42cb-bfe1-d2f9e657ef4b.png)</a> <a href="https://www.spigotmc.org/resources/70927/">![download-on-spigot](https://user-images.githubusercontent.com/17748923/187102011-b72e0f1d-ba74-4cb2-a69e-46f48cb364b5.png)</a>
+<table border=1><tr><td>
+<h2>🛑 End Of Life for SlimeDog/PluginVersions</h2>
+
+SlimeDog/PluginVersions has reached end-of-life
+
+Completed tasks:
+- Updated SlimeDog/PluginVersions to support Paper and Spigot 1.20.6 and 1.21.0
+- Posted update to SpigotMC
+- Posted end-of-life notices
+  - `Overview` and `Documentation` pages of SlimeDog/PluginVersions on SpigotMC
+  - `README` for SlimeDog/PluginVersions repository on Github
+  - `Home` page of SlimeDog/PluginVersions wiki on Github
+- Archived SlimeDog/PluginVersions Github repository
+- Removed SlimeDog/PluginVersions from bStats
+- Removed SlimeDog/PluginVersions from Hangar
+
+Support for future Minecraft versions:
+- SlimeDog/PluginVersions will likely work on future Minecraft versions without updates, but there are no guarantees
+- Anyone may fork PluginVersions to support future Minecraft versions, or for any other purpose permitted under the GPL3 license
+</td></tr></table>
+
+# PluginVersions
 
 Create an alphabetically-sorted list of loaded plugins and versions.
 
 ### Tested Environments
 **PluginVersions** was originally written for Spigot 1.8.8, and has worked for every Spigot version since then.
 
-**PluginVersions 1.3.2** was certified on
-- Paper 1.20-10
-- Spigot 1.20-3798 and 1.20.1-3799
-- BungeeCord 1.20-1713
-- Waterfall 1.20-536
-- Velocity 3.2.0-258
-
-**PluginVersions 1.1.2** was certified on
-- Paper 1.19.4-457
-- Spigot 1.19.4-3672
-- BungeeCord 1.19-1686
-- Waterfall 1.19-515
-- Velocity 3.2.0-243
-
-**PluginVersions 1.1.0** was certified on
-- Paper 1.19.3-392
-- Spigot 1.19.3-3649
-- BungeeCord 1.19-1678
-- Waterfall 1.19-510
-- Velocity 3.2.0-225
-
+### Commands
 All commands may be executed at the console, and in-game with appropriate permissions.
 
-### Commands
 > _pluginversions list_  
 > Create an alphabetically-sorted columnar list of plugins and versions.
 > 
@@ -37,9 +37,9 @@ All commands may be executed at the console, and in-game with appropriate permis
 > At present, the only configuration option is whether to send metrics to MCStats.org.
 
 ### Command aliases
-- pv :: Spigot, Paper
-- pvb :: BungeeCord, Waterfall
-- pvv :: Velocity
+> pv :: Spigot, Paper
+> pvb :: BungeeCord, Waterfall
+> pvv :: Velocity
 
 ### Permissions
 Permissions reflect the commands they allow. All permissions default to op.
