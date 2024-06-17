@@ -11,7 +11,6 @@ Completed tasks:
   - `README` for SlimeDog/PluginVersions repository on Github
   - `Home` page of SlimeDog/PluginVersions wiki on Github
 - Archived SlimeDog/PluginVersions Github repository
-- Removed SlimeDog/PluginVersions from bStats
 - Removed SlimeDog/PluginVersions from Hangar
 
 Support for future Minecraft versions:
