@@ -5,27 +5,6 @@ Create an alphabetically-sorted list of loaded plugins and versions.
 ### Tested Environments
 **PluginVersions** was originally written for Spigot 1.8.8, and has worked for every Spigot version since then.
 
-**PluginVersions 1.3.2** was certified on
-- Paper 1.20-10
-- Spigot 1.20-3798 and 1.20.1-3799
-- BungeeCord 1.20-1713
-- Waterfall 1.20-536
-- Velocity 3.2.0-258
-
-**PluginVersions 1.1.2** was certified on
-- Paper 1.19.4-457
-- Spigot 1.19.4-3672
-- BungeeCord 1.19-1686
-- Waterfall 1.19-515
-- Velocity 3.2.0-243
-
-**PluginVersions 1.1.0** was certified on
-- Paper 1.19.3-392
-- Spigot 1.19.3-3649
-- BungeeCord 1.19-1678
-- Waterfall 1.19-510
-- Velocity 3.2.0-225
-
 All commands may be executed at the console, and in-game with appropriate permissions.
 
 ### Commands
